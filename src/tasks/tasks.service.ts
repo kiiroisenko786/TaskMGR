@@ -1,11 +1,15 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { TaskStatus } from './tasks-status.enum';
+import { CreateTaskDto } from './dto/create-task.dto';
 import { GetTasksfilterDto } from './dto/get-tasks-filter.dto';
+import { TaskRepository } from './tasks.repository';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Task } from './task.entity';
 
 @Injectable()
 export class TasksService {
-
+constructor (private readonly tasksRepository: TaskRepository) {}
 //     getAllTasks(): Task[] {
 //         return this.tasks;
 //     }
@@ -30,6 +34,20 @@ export class TasksService {
         
 //         return tasks;
 //     }
+
+    async getTaskById(id: string): Promise<Task> {
+        const found = await this.tasksRepository.findOne({
+            where: {
+                id: id,
+            }
+        });
+
+        if (!found) {
+            throw new NotFoundException();
+        }
+
+        return found;
+    }
 
 //     getTaskById(id: string) : Task{
 //         const found = this.tasks.find((task) => task.id == id)
