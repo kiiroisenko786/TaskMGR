@@ -10,30 +10,10 @@ import { Task } from './task.entity';
 @Injectable()
 export class TasksService {
 constructor (private readonly tasksRepository: TaskRepository) {}
-//     getAllTasks(): Task[] {
-//         return this.tasks;
-//     }
 
-//     getTasksWithFilters(filterDto: GetTasksfilterDto): Task[] {
-//         const {status, search} = filterDto;
-
-//         let tasks = this.getAllTasks();
-
-//         if (status) {
-//             tasks = tasks.filter((task) => task.status === status);
-//         }
-
-//         if (search) {
-//             tasks = tasks.filter((task) => {
-//                 if (task.title.includes(search) || task.description.includes(search)) {
-//                     return true;
-//                 }
-//                 return false;
-//             });
-//         }
-        
-//         return tasks;
-//     }
+    getTasks(filterDto: GetTasksfilterDto): Promise<Task[]> {
+        return this.tasksRepository.getTasks(filterDto);
+    }
 
     async getTaskById(id: string): Promise<Task> {
         const found = await this.tasksRepository.findOne({
@@ -58,13 +38,17 @@ constructor (private readonly tasksRepository: TaskRepository) {}
         const result = await this.tasksRepository.delete(id);
         
         if (result.affected === 0) {
-            throw new NotFoundException(`Task with ID ${id} not found`);
+            throw new NotFoundException(`Task with ID ${id} not found`); // THIS USES BACKTICKS
         }
     }
 
-//     updateTaskStatus(id: string, status: TaskStatus) {
-//         const task = this.getTaskById(id);
-//         task.status = status;
-//         return task;
-//     }
+    async updateTaskStatus(id: string, status: TaskStatus): Promise<Task>{
+        const task = await this.getTaskById(id);
+        
+        task.status = status;
+
+        await this.tasksRepository.save(task);
+
+        return task;
+    }
 }
