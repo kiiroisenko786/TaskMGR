@@ -49,15 +49,10 @@ constructor (private readonly tasksRepository: TaskRepository) {}
         return found;
     }
 
-//     getTaskById(id: string) : Task{
-//         const found = this.tasks.find((task) => task.id == id)
-
-//         if (!found) {
-//             throw new NotFoundException();
-//         }
-
-//         return found;
-//     }
+    // Not async because we don't use await
+    createTask(createTaskDto: CreateTaskDto): Promise<Task> {
+        return this.tasksRepository.createTask(createTaskDto);
+    }
 
 //     createTask(CreateTaskDto): Task {
 //         const {title, description} = CreateTaskDto;
