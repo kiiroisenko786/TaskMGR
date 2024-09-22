@@ -24,8 +24,7 @@
 
 ## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
-Project progress is disturbed due to course being out of date.
+A backend introduction to using NestJS, Typescript, PostGres, pgAdmin, NestJS CLI, Jest unit testing and Postman API testing.
 
 ## Installation
 
